@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
 module.exports = function (req, res, next) {
+  console.log('validate');
   if (req.method == 'OPTIONS') {
     next(); // allowing options as a method for request
   } else {

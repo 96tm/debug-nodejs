@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
 router.post('/signup', (req, res) => {
+  console.log('body', req.body.user);
   User.create({
     full_name: req.body.user.full_name,
     username: req.body.user.username,
