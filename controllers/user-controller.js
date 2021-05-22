@@ -1,14 +1,15 @@
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('../models/user');
+const sequelize = require('../db');
+const { DataTypes } = require('sequelize');
+const User = require('../models/user')(sequelize, DataTypes);
 
-router.post('/signup', (req, res) => {
-  console.log('body', req.body.user);
+router.route('/signup').post((req, res) => {
   User.create({
     full_name: req.body.user.full_name,
     username: req.body.user.username,
-    passwordhash: bcrypt.hashSync(req.body.user.password, 10),
+    passwordHash: bcrypt.hashSync(req.body.user.password, 10),
     email: req.body.user.email,
   }).then(
     function signupSuccess(user) {
@@ -27,7 +28,7 @@ router.post('/signup', (req, res) => {
   );
 });
 
-router.post('/signin', (req, res) => {
+router.route('/signin').post((req, res) => {
   User.findOne({ where: { username: req.body.user.username } }).then((user) => {
     if (user) {
       bcrypt.compare(
